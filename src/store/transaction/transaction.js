@@ -23,6 +23,14 @@ const st$transaction = defineStore({
                     data: []
                 }
             }
+        },
+        async a$addTransaction(form) {
+            try {
+                await sv$transaction.addTransaction(form);
+                await this.a$getTransaction()
+            } catch ({error, message}) {
+                throw error ?? message
+            }
         }
     },
     getters: {

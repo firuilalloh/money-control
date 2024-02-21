@@ -2,54 +2,52 @@
   <div class="py-4 container-fluid">
     <div class="row">
       <div class="col-12">
-        <button class="btn btn-info" @click="showModal">Add Something</button>
+        <button-component
+          buttonStyle="info"
+          @click="showModal"
+          buttonText="Add Something"
+        />
         <modal-component
-          v-show="isModalVisible"
-          :headerTitle="modalTitle"
+          :modalTitle="modalTitle"
+          :is-active="isModalVisible"
           @close="closeModal"
+          @save="submitData"
+         
         >
-          <template v-slot:body>
-            <form @submit.prevent="submitData">
-              <input-comp
-                label="Category Name"
-                :type="'text'"
-                v-bind="dataInput.category_id"
-                :required="true"
-              >
-                <select class="form-select">
-                  <option value="1">Salary</option>
-                  <option value="2">Shop</option>
-                  <option value="3">Transport</option>
-                </select>
-              </input-comp>
-              <input-comp
-                label="Transaction Type"
-                :type="'text'"
-                v-bind="dataInput.jenis_transaksi"
-                :required="true"
-              >
-              <select class="form-select">
-                  <option value="Pemasukan">Pemasukan</option>
-                  <option value="Pengeluaran">Pengeluaran</option>
-                </select>
-              </input-comp>
-              <input-comp
-                label="Total"
-                :type="'number'"
-                v-bind="dataInput.jumlah"
-                :required="true"
-              />
-              <input-comp
-                label="Informations"
-                :type="'text'"
-                v-bind="dataInput.keterangan"
-                :required="true"
-              />
-            </form>
-          </template>
-          <template v-slot:footer>
-            <ButtonComponent :Text="titleButton" @click="submitData" />
-          </template>
+        <!-- <form-comp @submit="submitData" >
+          <field-form v-slot="{ field }" v-model="dataInput.category_id">
+            <input-comp v-bind="field" v-model="dataInput.category_id">
+              <drop-down :options="optionsCategory" name="Category" />
+            </input-comp>
+          </field-form>
+          <field-form v-slot="{ field }" v-model="dataInput.type_id">
+            <input-comp v-bind="field" v-model="dataInput.type_id">
+              <drop-down :options="optionsType" name="Type" />
+            </input-comp>
+          </field-form>
+          <field-form v-slot="{ field }" v-model="dataInput.total" name="Total">
+            <input-comp label="Total" v-bind="field" />
+          </field-form>
+          <field-form v-slot="{ field }" v-model="dataInput.info" name="Info">
+            <input-comp label="Info" v-bind="field" />
+          </field-form>
+        </form-comp> -->
+          <field-form v-slot="{ field }" v-model="dataInput.category_id">
+            <input-comp v-bind="field" v-model="dataInput.category_id">
+              <drop-down :options="optionsCategory" name="Category" />
+            </input-comp>
+          </field-form>
+          <field-form v-slot="{ field }" v-model="dataInput.type_id">
+            <input-comp v-bind="field" v-model="dataInput.type_id">
+              <drop-down :options="optionsType" name="Type" />
+            </input-comp>
+          </field-form>
+          <field-form v-slot="{ field }" v-model="dataInput.total" name="Total">
+            <input-comp label="Total" v-bind="field" />
+          </field-form>
+          <field-form v-slot="{ field }" v-model="dataInput.info" name="Info">
+            <input-comp label="Info" v-bind="field" />
+          </field-form>
         </modal-component>
         <empty-result :status="g$dataTransaction.status">
           <data-table :data="g$dataTransaction.data" v-bind="dt" />
@@ -62,30 +60,38 @@
 <script>
 import st$transaction from "../store/transaction/transaction.js";
 import { mapActions, mapState } from "pinia";
-import * as sv$transaction from "../service/transaction/transaction.js";
-import ButtonComponent from "../components/ButtonComponent.vue";
 
 export default {
   name: "tables",
-  components: {
-    ButtonComponent,
-  },
   data: () => ({
+    // data kolom
     dt: {
       columns: [
         { name: "category_name", th: "Category Name" },
-        { name: "jenis_transaksi", th: "Transaction Type" },
-        { name: "jumlah", th: "Total" },
-        { name: "keterangan", th: "Information" },
-        { name: "tanggal", th: "Date" },
+        { name: "type_name", th: "Transaction Type" },
+        { name: "total", th: "Total" },
+        { name: "info", th: "Information" },
+        { name: "indate", th: "Date" },
       ],
     },
+    // input data
     dataInput: {
-      category_id: '',
-      jenis_transaksi: '',
-      jumlah: '',
-      keterangan: '',
+      category_id: null,
+      type_id: null,
+      total: "",
+      info: "",
     },
+    // data option category select
+    optionsCategory: [
+      { text: "Selery", value: 1 },
+      { text: "Transport", value: 2 },
+      { text: "Shop", value: 3 },
+    ],
+    // data option category select
+    optionsType: [
+      { text: "Income", value: 1 },
+      { text: "Expand", value: 2 },
+    ],
     modalTitle: "Transaction",
     titleButton: "Save",
     isModalVisible: false,
@@ -95,7 +101,6 @@ export default {
   },
   async mounted() {
     await this.transaction();
-    console.log(this.transaction);
   },
   methods: {
     showModal() {
@@ -106,23 +111,21 @@ export default {
       this.isModalVisible = false;
     },
 
-    ...mapActions(st$transaction, ["a$getTransaction"]),
+    ...mapActions(st$transaction, ["a$getTransaction", "a$addTransaction"]),
     async transaction() {
       try {
-        this.dataTransaction = await this.a$getTransaction();
+        await this.a$getTransaction();
       } catch (error) {
         console.error(error);
       }
     },
 
-    async submitData() {
+    submitData() {
       try {
-        console.log(this.dataInput);
-        const response = await sv$transaction.addTransaction();
-        console.log("passing to BE", response);
-        this.closeModal();
+        this.a$addTransaction(this.dataInput);
+        this.isModalVisible = false
       } catch (error) {
-        console.error(error);
+        console.log("error bolo", error);
       }
     },
   },

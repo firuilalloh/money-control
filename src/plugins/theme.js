@@ -6,6 +6,7 @@ import "@/assets/scss/argon-dashboard.scss";
 import "@/assets/css/nucleo-icons.css";
 import "@/assets/css/nucleo-svg.css";
 
+
 // GlobalComponent
 import GlobalComponent from "./globalComponent";
 

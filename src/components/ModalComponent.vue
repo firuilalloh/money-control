@@ -1,151 +1,85 @@
 <template>
-  <transition name="modal-fade">
-    <div class="modal-backdrop">
-      <div
-        class="modal"
-        role="dialog"
-        aria-labelledby="modalTitle"
-        aria-describedby="modalDescription"
-      >
-        <header class="modal-header" id="modalTitle">
-          <slot name="header">
-            <h3 class="header-title">
-              {{ headerTitle }}
-            </h3>
-          </slot>
-          <button
-            type="button"
-            class="close-btn"
-            @click="close"
-            aria-label="Close Modal"
-          >
-            x
-          </button>
-        </header>
-
-        <main class="modal-body" id="modalDescription">
-          <slot name="body"> </slot>
-        </main>
-
-        <footer class="modal-footer">
-          <slot name="footer"> </slot>
-        </footer>
+  <div class="modal" :class="{ 'is-active': isActive }">
+    <div class="modal-background"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>{{ modalTitle }}</h3>
+      </div>
+      <div class="modal-body">
+        <slot></slot>
+      </div>
+      <div class="modal-footer">
+        <button-component
+          buttonStyle="danger"
+          aria-label="close"
+          @click="closeModal"
+          button-text="Close"
+        />
+        <button-component
+          buttonStyle="success"
+          aria-label="save"
+          @click="saveModal"
+          button-text="Save"
+        />
       </div>
     </div>
-  </transition>
+  </div>
 </template>
 
 <script>
-import ButtonComponent from "./ButtonComponent.vue";
-
 export default {
-  name: "Modal",
-  components: {
-    ButtonComponent,
-  },
-  data() {
-    return {
-      buttonTitle: "Save",
-    };
+  props: {
+    modalTitle: {
+      type: String,
+      default: "Modal",
+    },
+    isActive: {
+      type: Boolean,
+      default: false,
+    },
   },
   methods: {
-    close() {
+    closeModal() {
       this.$emit("close");
     },
-  },
-  props: {
-    headerTitle: {
-      type: String,
-      default: "Header",
-    },
+    saveModal() {
+      this.$emit("save")
+    }
   },
 };
 </script>
 
-<style>
-.modal-backdrop {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background-color: rgba(0, 0, 0, 0);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.header-title {
-  margin-bottom: -2px;
-}
-
+<style lang="scss" scoped>
 .modal {
-  background: #ffffff;
-  box-shadow: 2px 2px 20px 1px;
-  overflow-x: auto;
-  display: flex;
-  flex-direction: column;
-  border-radius: 10px;
-  width: 50%;
-  height: 80%;
-  margin-top: 70px;
-  margin-left: 33%;
-}
-
-.modal-header,
-.modal-footer {
-  padding-top: 10px;
-  display: flex;
-}
-
-.modal-header {
-  position: relative;
-  border-bottom: 1px solid rgb(227, 231, 233);
-  color: #353535;
-  justify-content: space-between;
-}
-
-.modal-footer {
-  border-top: 1px solid rgb(227, 231, 233);
-  flex-direction: column;
-  justify-content: flex-end;
-}
-
-.modal-body {
-  position: relative;
-  padding: 20px 10px;
-}
-
-.close-btn {
-  position: absolute;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  left: 0;
   top: 0;
-  right: 0;
-  border: none;
-  font-size: 20px;
-  padding-top: 13px;
-  padding-right: 20px;
-  cursor: pointer;
-  font-weight: bold;
-  color: #245f7e;
-  background: transparent;
-}
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
 
-.btn-close-modal {
-  color: white;
-  background: green;
-  border: 1px solid green;
-  border-radius: 4px;
-  margin: 10px auto;
-  padding: 5px;
-  width: 40%;
-}
-.modal-fade-enter,
-.modal-fade-leave-to {
-  opacity: 0;
-}
+  &.is-active {
+    display: flex;
+  }
 
-.modal-fade-enter-active,
-.modal-fade-leave-active {
-  transition: opacity 0.5s ease;
+  .modal-background {
+    background-color: rgba(0, 0, 0, 0.5);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
+
+  .modal-content {
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    width: 500px;
+  }
 }
 </style>
