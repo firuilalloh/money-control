@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-lg-12">
         <div class="col-12 w-20">
-          <card-comp title="Balance" :balance="g$dataBalance.data.total" />
+          <card-comp title="Balance" :balance="g$dataBalance.total" />
         </div>
         <button-component
           buttonStyle="info"

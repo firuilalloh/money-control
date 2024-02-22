@@ -11,7 +11,7 @@ const st$transaction = defineStore({
         dataBalance: {
             status: null,
             message: "",
-            data: [],
+            total: [],
         },
     }),
     actions: {
@@ -31,9 +31,9 @@ const st$transaction = defineStore({
         },
         async a$getBalance() {
             try {
-                const { status, message, data } = await sv$transaction.getBalance();
+                const { status, message, total } = await sv$transaction.getBalance();
                 this.dataBalance = {
-                    data,
+                    total,
                     message,
                     status,
                 };
@@ -41,7 +41,7 @@ const st$transaction = defineStore({
                 this.dataBalance = {
                     status: false,
                     message: "",
-                    data: [],
+                    total: [],
                 };
             }
         },
