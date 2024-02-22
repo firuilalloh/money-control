@@ -6,21 +6,10 @@
         <h3>{{ modalTitle }}</h3>
       </div>
       <div class="modal-body">
-        <slot></slot>
+        <slot name="body"></slot>
       </div>
       <div class="modal-footer">
-        <button-component
-          buttonStyle="danger"
-          aria-label="close"
-          @click="closeModal"
-          button-text="Close"
-        />
-        <button-component
-          buttonStyle="success"
-          aria-label="save"
-          @click="saveModal"
-          button-text="Save"
-        />
+        <slot name="footer"></slot>
       </div>
     </div>
   </div>
@@ -37,14 +26,6 @@ export default {
       type: Boolean,
       default: false,
     },
-  },
-  methods: {
-    closeModal() {
-      this.$emit("close");
-    },
-    saveModal() {
-      this.$emit("save")
-    }
   },
 };
 </script>

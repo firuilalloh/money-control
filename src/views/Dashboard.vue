@@ -3,7 +3,8 @@
     <div class="row">
       <div class="col-lg-12">
         <div class="row">
-          <div class="col-12">
+          <div class="col-12 w-25">
+            <card-comp />
           </div>
         </div>
         <EmptyResult :status="g$dataCategory.status" >

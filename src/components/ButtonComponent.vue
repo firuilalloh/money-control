@@ -1,9 +1,6 @@
 <template>
-  <button :class="computedClass" :disabled="isLoading" @click="handleClick">
-    <span v-if="!isLoading">
+  <button :class="computedClass" @click="handleClick">
       {{ buttonText }}
-    </span>
-    <span v-else> <i class="fas fa-spinner fa-spin"></i> Loading... </span>
   </button>
 </template>
 
@@ -17,19 +14,16 @@ export default {
     buttonStyle: {
       type: String,
     },
-    isLoading: {
-      type: Boolean,
-      default: false,
-    },
   },
   computed: {
     computedClass() {
       return `btn btn-${this.buttonStyle}`;
     },
   },
+  emits: ['click'],
   methods: {
-    handleClick() {
-      this.$emit("click");
+    handleClick(event) {
+      this.$emit("click", event);
     },
   },
 };

@@ -1,53 +1,50 @@
 <template>
   <div class="py-4 container-fluid">
     <div class="row">
-      <div class="col-12">
+      <div class="col-lg-12">
+        <div class="col-12 w-20">
+          <card-comp title="Balance" :balance="g$dataBalance.data.total" />
+        </div>
         <button-component
           buttonStyle="info"
           @click="showModal"
           buttonText="Add Something"
         />
-        <modal-component
-          :modalTitle="modalTitle"
-          :is-active="isModalVisible"
-          @close="closeModal"
-          @save="submitData"
-         
-        >
-        <!-- <form-comp @submit="submitData" >
-          <field-form v-slot="{ field }" v-model="dataInput.category_id">
-            <input-comp v-bind="field" v-model="dataInput.category_id">
-              <drop-down :options="optionsCategory" name="Category" />
-            </input-comp>
-          </field-form>
-          <field-form v-slot="{ field }" v-model="dataInput.type_id">
-            <input-comp v-bind="field" v-model="dataInput.type_id">
-              <drop-down :options="optionsType" name="Type" />
-            </input-comp>
-          </field-form>
-          <field-form v-slot="{ field }" v-model="dataInput.total" name="Total">
-            <input-comp label="Total" v-bind="field" />
-          </field-form>
-          <field-form v-slot="{ field }" v-model="dataInput.info" name="Info">
-            <input-comp label="Info" v-bind="field" />
-          </field-form>
-        </form-comp> -->
-          <field-form v-slot="{ field }" v-model="dataInput.category_id">
-            <input-comp v-bind="field" v-model="dataInput.category_id">
-              <drop-down :options="optionsCategory" name="Category" />
-            </input-comp>
-          </field-form>
-          <field-form v-slot="{ field }" v-model="dataInput.type_id">
-            <input-comp v-bind="field" v-model="dataInput.type_id">
-              <drop-down :options="optionsType" name="Type" />
-            </input-comp>
-          </field-form>
-          <field-form v-slot="{ field }" v-model="dataInput.total" name="Total">
-            <input-comp label="Total" v-bind="field" />
-          </field-form>
-          <field-form v-slot="{ field }" v-model="dataInput.info" name="Info">
-            <input-comp label="Info" v-bind="field" />
-          </field-form>
+        <modal-component :modalTitle="modalTitle" :is-active="isModalVisible">
+          <template #body>
+            <field-form v-slot="{ field }" v-model="dataInput.category_id">
+              <input-comp v-bind="field" v-model="dataInput.category_id">
+                <drop-down :options="optionsCategory" name="Category" />
+              </input-comp>
+            </field-form>
+            <field-form v-slot="{ field }" v-model="dataInput.type_id">
+              <input-comp v-bind="field" v-model="dataInput.type_id">
+                <drop-down :options="optionsType" name="Type" />
+              </input-comp>
+            </field-form>
+            <field-form
+              v-slot="{ field }"
+              v-model="dataInput.total"
+              name="Total"
+            >
+              <input-comp label="Total" v-bind="field" />
+            </field-form>
+            <field-form v-slot="{ field }" v-model="dataInput.info" name="Info">
+              <input-comp label="Info" v-bind="field" />
+            </field-form>
+          </template>
+          <template #footer>
+            <button-component
+              buttonStyle="danger"
+              @click="closeModal"
+              button-text="Close"
+            />
+            <button-component
+              buttonStyle="success"
+              @click="submitData"
+              button-text="Save"
+            />
+          </template>
         </modal-component>
         <empty-result :status="g$dataTransaction.status">
           <data-table :data="g$dataTransaction.data" v-bind="dt" />
@@ -97,10 +94,11 @@ export default {
     isModalVisible: false,
   }),
   computed: {
-    ...mapState(st$transaction, ["g$dataTransaction"]),
+    ...mapState(st$transaction, ["g$dataTransaction", "g$dataBalance"]),
   },
   async mounted() {
     await this.transaction();
+    await this.balance();
   },
   methods: {
     showModal() {
@@ -111,7 +109,11 @@ export default {
       this.isModalVisible = false;
     },
 
-    ...mapActions(st$transaction, ["a$getTransaction", "a$addTransaction"]),
+    ...mapActions(st$transaction, [
+      "a$getTransaction",
+      "a$addTransaction",
+      "a$getBalance",
+    ]),
     async transaction() {
       try {
         await this.a$getTransaction();
@@ -119,11 +121,17 @@ export default {
         console.error(error);
       }
     },
-
+    async balance() {
+      try {
+        await this.a$getBalance();
+      } catch (error) {
+        console.error(error);
+      }
+    },
     submitData() {
       try {
         this.a$addTransaction(this.dataInput);
-        this.isModalVisible = false
+        this.isModalVisible = false;
       } catch (error) {
         console.log("error bolo", error);
       }
