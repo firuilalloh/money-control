@@ -4,7 +4,6 @@
       <div class="col-lg-12">
         <div class="row">
           <div class="col-12 w-25">
-            <card-comp />
           </div>
         </div>
         <EmptyResult :status="g$dataCategory.status" >
@@ -33,7 +32,8 @@ export default {
       columns: [
         {name: "category_id", th: "Category ID"},
         {name: "category_name", th: "Category Name"}
-      ]
+      ],
+      index: false
     }
   }),
   computed: {

@@ -1,5 +1,5 @@
 <template>
-  <div :class="[{ ['table-responsive']: true }]">
+  <div :class="[ { ['table-responsive']: true } ]">
     <div v-if="loading || ajaxLoading" class="table-responsive-loading">
       <div class="table-responsive-loading-spinner"></div>
       <div class="table-responsive-loading-text">Loading Data</div>
@@ -18,9 +18,7 @@
                 <option value="50">50</option>
                 <option value="100">100</option>
               </select>
-              <span class="d-none d-md-inline text-muted ml-2"
-                > entries per page</span
-              >
+              <span class="d-none d-md-inline text-muted ml-2">entries per page</span>
             </label>
           </div>
         </div>
@@ -52,11 +50,7 @@
       <div class="table-responsive">
         <table
           class="table tablesorter"
-          :class="{
-            straight: !breakWords,
-            'table-hover': !!onClick,
-            'table-bordered': bordered,
-          }"
+          :class="{ straight: !breakWords, 'table-hover': !!onClick, 'table-bordered': bordered }"
         >
           <thead>
             <tr>
@@ -73,8 +67,8 @@
               </th>
 
               <!-- Display Index If Requested -->
-              <!-- <th
-                v-if="index && sortColumn !== '#'"
+              <th
+                v-if="index"
                 class="sortable"
                 :class="{
                   sort: sortColumn === '#',
@@ -83,8 +77,8 @@
                 }"
                 @click="sortIndex()"
               >
-               # 
-              </th> -->
+                #
+              </th>
               <!-- Display All Parsed Headers -->
               <th
                 v-for="(th, i) in tableHeaders"
@@ -130,24 +124,10 @@
 
               <!-- Display All Parsed Values -->
               <!-- <component :is="i+'Component'" v-if="value.render"></component> -->
-              <template
-                v-for="(td, j) in item.details.filter((d) => d.show)"
-                :key="j"
-              >
-                <td
-                  :class="[
-                    `bg-${td?.rendered?.color ?? 'white'}`,
-                    `text-${td?.rendered?.text ?? 'black'}`,
-                  ]"
-                  @click="
-                    click(item.row, td.value, td.name, i),
-                      columnClick(td.click, item.row, td.value, td.name, i)
-                  "
-                >
+              <template v-for="(td, j) in item.details.filter((d) => d.show)" :key="j" >
+                <td :class="[`bg-${td?.rendered?.color ?? 'white'}`, `text-${td?.rendered?.text ?? 'black'}`]" @click="click(item.row, td.value, td.name, i), columnClick(td.click, item.row, td.value, td.name, i)">
                   <!-- eslint-disable-next-line vue/no-v-html -->
-                  <span
-                    v-html="td?.rendered?.value ?? td?.rendered ?? '--'"
-                  ></span>
+                  <span v-html="td?.rendered?.value ?? td?.rendered ?? '--'"></span>
                 </td>
               </template>
 
@@ -218,7 +198,7 @@
 /* eslint-disable no-continue */
 
 export default {
-  name: "DataTable",
+  name: 'DataTable',
   props: {
     // =================================
     // Ajax
@@ -228,7 +208,7 @@ export default {
     // Ajax URL
     url: {
       type: String,
-      default: () => "",
+      default: () => '',
     },
     // Whether Or Not To Use Ajax
     ajax: {
@@ -323,11 +303,11 @@ export default {
     // Current Page Items
     paginatedItems: [],
     // Sort Order
-    asc: "asc",
+    asc: 'asc',
     // Column For Sorting
     sortColumn: null,
     // Search Query
-    query: "",
+    query: '',
     // Table Headers
     headers: [],
     // Mapped Data
@@ -382,14 +362,14 @@ export default {
     currentPage(newValue) {
       this.paginatedItems = this.renderedItems.slice(
         this.itemsPerPage * (newValue - 1),
-        this.itemsPerPage * newValue
+        this.itemsPerPage * newValue,
       );
     },
     itemsPerPage(newValue) {
       this.currentPage = 1;
       this.paginatedItems = this.renderedItems.slice(
         newValue * (this.currentPage - 1),
-        newValue * this.currentPage
+        newValue * this.currentPage,
       );
     },
     items(newValue) {
@@ -400,7 +380,7 @@ export default {
       // Get All Items In Current Page
       this.paginatedItems = this.renderedItems.slice(
         this.itemsPerPage * (this.currentPage - 1),
-        this.itemsPerPage * this.currentPage
+        this.itemsPerPage * this.currentPage,
       );
 
       this.asc = true;
@@ -415,7 +395,7 @@ export default {
       handler(newValue) {
         this.paginatedItems = newValue.slice(
           this.itemsPerPage * (this.currentPage - 1),
-          this.itemsPerPage * this.currentPage
+          this.itemsPerPage * this.currentPage,
         );
       },
     },
@@ -447,17 +427,15 @@ export default {
     },
     // Navigate To Next Page
     next() {
-      this.currentPage =
-        this.currentPage >= this.renderedItems.length
-          ? 0
-          : this.currentPage + 1;
+      this.currentPage = this.currentPage >= this.renderedItems.length
+        ? 0
+        : this.currentPage + 1;
     },
     // Navigate To Previous Page
     prev() {
-      this.currentPage =
-        this.currentPage <= 0
-          ? this.renderedItems.length
-          : this.currentPage - 1;
+      this.currentPage = this.currentPage <= 0
+        ? this.renderedItems.length
+        : this.currentPage - 1;
     },
     // Navigate To Last Page
     end() {
@@ -478,20 +456,20 @@ export default {
         item.details.forEach((detail) => {
           // Cancel If Original And Processed Value Are NULL Or Undefined
           if (
-            detail.value === null ||
-            detail.rendered === null ||
-            detail.value === undefined ||
-            detail.rendered === undefined
+            detail.value === null
+            || detail.rendered === null
+            || detail.value === undefined
+            || detail.rendered === undefined
           ) {
             return;
           }
           // If Found In Original Value
-          if (detail.value.toString().match(new RegExp(query, "i"))) {
+          if (detail.value.toString().match(new RegExp(query, 'i'))) {
             found = true;
           }
 
           // If Found In Processed Value
-          if (detail.rendered.toString().match(new RegExp(query, "i"))) {
+          if (detail.rendered.toString().match(new RegExp(query, 'i'))) {
             found = true;
           }
         });
@@ -502,13 +480,13 @@ export default {
             continue;
           }
 
-          if (item.row[column].toString().match(new RegExp(query, "i"))) {
+          if (item.row[column].toString().match(new RegExp(query, 'i'))) {
             found = true;
           }
           if (
             Object.values(item.row[column])
               .toString()
-              .match(new RegExp(query, "i"))
+              .match(new RegExp(query, 'i'))
           ) {
             found = true;
           }
@@ -528,10 +506,10 @@ export default {
       this.renderedItems = this.renderedItems.sort((a, b) => {
         const detailx = a.details.find((detail) => detail.name === column);
         let x = detailx.rendered;
-        x = typeof x === "string" ? x.toLowerCase() : x;
+        x = typeof x === 'string' ? x.toLowerCase() : x;
         const detaily = b.details.find((detail) => detail.name === column);
         let y = detaily.rendered;
-        y = typeof y === "string" ? y.toLowerCase() : y;
+        y = typeof y === 'string' ? y.toLowerCase() : y;
         return x > y ? -1 : 1;
       });
       if (!this.asc && column !== this.sortColumn) {
@@ -539,7 +517,7 @@ export default {
       } else if (this.asc === true && column === this.sortColumn) {
         this.asc = false;
       } else {
-        column = "#";
+        column = '#';
         this.sortIndex();
         this.asc = !this.asc;
       }
@@ -558,7 +536,7 @@ export default {
         const indexB = b.index;
         return indexA > indexB ? -1 : 1;
       });
-      this.asc = this.sortColumn === "#" ? !this.asc : true;
+      this.asc = this.sortColumn === '#' ? !this.asc : true;
 
       if (asc !== undefined) {
         if (!asc) {
@@ -568,7 +546,7 @@ export default {
         this.renderedItems = this.renderedItems.reverse();
       }
 
-      this.sortColumn = "#";
+      this.sortColumn = '#';
 
       this.currentPage = 1;
     },
@@ -580,7 +558,7 @@ export default {
       const items = this.mapItems(this.items);
       const filtered = items.filter((item, index) => {
         const column = item.details.find(
-          (value) => value.name === filterColumn
+          (value) => value.name === filterColumn,
         );
         if (!column) {
           return false;
@@ -591,8 +569,8 @@ export default {
             return true;
           }
         } else if (
-          column.value === filterValue ||
-          column.rendered === filterValue
+          column.value === filterValue
+          || column.rendered === filterValue
         ) {
           return true;
         }
@@ -702,10 +680,10 @@ export default {
     },
 
     // Alerts
-    success(success = "Success") {
+    success(success = 'Success') {
       return success;
     },
-    error(error = "Error") {
+    error(error = 'Error') {
       return error;
     },
   },
@@ -718,12 +696,11 @@ export default {
     transform: rotate(0deg)
   to
     transform: rotate(359deg)
-
 .table-responsive
   // font-size: 14px
   overflow-x: auto
   border-radius: .375rem .375rem .375rem .375rem
-  background-color: rgba(255, 255, 255)
+  background-color: #fff
 
   &-loading
     align-items: center
@@ -733,7 +710,6 @@ export default {
     justify-content: center
     position: relative
     width: 100%
-
     &-spinner
       animation: spin 1s linear infinite
       border-radius: 999px
@@ -743,26 +719,23 @@ export default {
       height: 75px
       margin-bottom: 15px
       width: 75px
-
     &-text
       font-weight: 300
       text-transform: uppercase
 
   &-control
     .custom-select
-    width: initial
+      width: initial
 
   table
     thead
       th
         font-size: 1rem
         font-weight: 500
-
         &.sortable
           cursor: pointer
           padding-right: 30px
           position: relative
-
           &:before,
           &:after
             border: 5px solid transparent
@@ -771,49 +744,31 @@ export default {
             opacity: .3
             position: absolute
             right: 10px
-
           &:before
             border-bottom-color: currentColor
             top: 10px
-
           &:after
             bottom: 10px
             border-top-color: currentColor
-
         &.sort
           font-weight: 700
-
           &.asc
             &:before
               opacity: 1
-
           &.desc
             &:after
               opacity: 1
-
-      // th:first-child,
-      // th.sortable
-      //   display: none
-
     tbody
       border-bottom: 1px solid #e9ecef
-
       tr
         &.clickable
           cursor: pointer
-
       td
         vertical-align: middle
         padding-left: 25px
 
-      th:first-child,
-      td:first-child
-        display: none
-      
-
     &-filters
       margin-bottom: 15px
-
     &-filter
       background: #fff
       border-radius: 3px
@@ -823,19 +778,17 @@ export default {
       font-size: 1rem
       padding: 5px 15px
       margin: 0 0 3px 3px
-
       &:hover
         background: #aaa
         color: #fff
-
       &.active
         background: #337ab7
         color: #fff
 
   .table
     &.table-bordered
-    //   th, td
-    // border: 1px solid gray
+      th, td
+        // border: 1px solid gray
     th, td
       font-size: 14px
 </style>

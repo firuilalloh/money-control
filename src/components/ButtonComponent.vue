@@ -1,16 +1,12 @@
 <template>
   <button :class="computedClass" @click="handleClick">
-      {{ buttonText }}
+    <slot></slot>
   </button>
 </template>
 
 <script>
 export default {
   props: {
-    buttonText: {
-      type: String,
-      default: 'Test'
-    },
     buttonStyle: {
       type: String,
     },

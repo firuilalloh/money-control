@@ -3,7 +3,7 @@
     <div class="modal-background"></div>
     <div class="modal-content">
       <div class="modal-header">
-        <h3>{{ modalTitle }}</h3>
+        {{ modalTitle }}
       </div>
       <div class="modal-body">
         <slot name="body"></slot>
@@ -61,6 +61,10 @@ export default {
     display: flex;
     flex-direction: column;
     width: 500px;
+  }
+  .modal-header {
+    font-size: 30px;
+    font-weight: 700;
   }
 }
 </style>
