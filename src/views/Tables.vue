@@ -9,19 +9,18 @@
           Add New {{ modalTitle }}
         </button-component>
 
-          <empty-result :status="g$dataTransaction.status">
-            <data-table
-              :data="g$dataTransaction.data"
-              v-bind="dt"
-              @detail-customer="triggerEditModal"
-              @delete-customer="triggerDeleteModal"
-            />
-          </empty-result>
+        <empty-result :status="g$dataTransaction.status">
+          <data-table
+            :data="g$dataTransaction.data"
+            v-bind="dt"
+            @edit-transaction="EditModal"
+            @delete-transaction="DeleteModal"
+          />
+        </empty-result>
 
         <modal-component :modalTitle="modalTitle" :is-active="isModalVisible">
           <template #body>
             <field-form
-              :validate-schema="schema"
               v-slot="{ field }"
               v-model="dataInput.category_id"
               name="category"
@@ -31,7 +30,6 @@
               </input-comp>
             </field-form>
             <field-form
-              :validate-schema="schema"
               v-slot="{ field }"
               v-model="dataInput.type_id"
               nmae="type"
@@ -41,19 +39,13 @@
               </input-comp>
             </field-form>
             <field-form
-              :validate-schema="schema"
               v-slot="{ field }"
               v-model="dataInput.total"
               name="Total"
             >
               <input-comp label="Total" v-bind="field" />
             </field-form>
-            <field-form
-              :validate-schema="schema"
-              v-slot="{ field }"
-              v-model="dataInput.info"
-              name="Info"
-            >
+            <field-form v-slot="{ field }" v-model="dataInput.info" name="Info">
               <input-comp label="Info" v-bind="field" />
             </field-form>
           </template>
@@ -74,22 +66,18 @@
 <script>
 import st$transaction from "../store/transaction/transaction.js";
 import { mapActions, mapState } from "pinia";
-import { object as y$object, string as y$string } from "yup";
 
 export default {
   name: "tables",
-  setup() {
-    const schema = y$object({
-      category: y$string().required().label("category"),
-      type: y$string().required().label("type"),
-      total: y$string().required().label("total"),
-      info: y$string().required().label("info"),
-    });
-    return {
-      schema,
-    };
-  },
   data: () => ({
+    // input data
+    dataInput: {
+      transaction_id: null,
+      category_id: "",
+      type_id: "",
+      total: "",
+      info: "",
+    },
     // data kolom
     dt: {
       columns: [
@@ -103,22 +91,15 @@ export default {
         {
           text: "Edit",
           color: "info",
-          event: "edit-customer",
+          event: "edit-transaction",
         },
         {
           text: "Delete",
           color: "danger",
-          event: "delete-customer",
+          event: "delete-transaction",
         },
       ],
       index: false,
-    },
-    // input data
-    dataInput: {
-      category_id: null,
-      type_id: null,
-      total: "",
-      info: "",
     },
     // data option category select
     optionsCategory: [
@@ -155,6 +136,7 @@ export default {
       "a$getTransaction",
       "a$addTransaction",
       "a$getBalance",
+      "a$editTransaction",
     ]),
     async transaction() {
       try {
@@ -170,14 +152,21 @@ export default {
         console.error(error);
       }
     },
-    submitData() {
+    async submitData() {
       try {
         this.a$addTransaction(this.dataInput);
         this.isModalVisible = false;
-        window.location.reload()
+        window.location.reload();
       } catch (error) {
         console.log("error", error);
       }
+    },
+    async EditModal() {
+      console.log("test");
+    },
+
+    async DeleteModal() {
+      console.log("test2");
     },
   },
 };
