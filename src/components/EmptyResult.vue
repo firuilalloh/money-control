@@ -15,7 +15,7 @@ export default {
   },
   computed: {
     loadState() {
-      return this.status === null ? false : this.status;
+      return this.status
     },
   },
 };
@@ -30,9 +30,7 @@ export default {
             <span class="sr-only">Loading...</span>
           </i>
         </div>
-        <div v-else-if="loadState === false" class="spinner-border" role="status">
-        </div>
-        <h3 class="text-danger text-center"><strong>{{text}} Data</strong> is Empty!</h3>
+          <h3 class="text-danger text-center"><strong>{{text}} Data</strong> is Empty!</h3>
       </div>
     </div>
   </template>
