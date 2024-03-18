@@ -61,6 +61,14 @@ const st$transaction = defineStore({
                 throw error ?? message;
             }
         },
+        async a$deleteTransaction(id) {
+            try {
+                await sv$transaction.deleteTransaction(id);
+                await this.a$getTransaction()
+            } catch ({error, message}) {
+                throw error ?? message
+            }
+        }
     },
     getters: {
         g$dataTransaction: ({ dataTransaction }) => dataTransaction,

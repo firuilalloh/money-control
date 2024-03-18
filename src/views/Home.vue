@@ -1,35 +1,5 @@
 <template>
-  <button-component
-    buttonStyle="success"
-    @click="openModal"
-    buttonText="Open Modal"
-  />
-  <modal-component
-    :is-active="modalActive"
-    @close="closeModal"
-    @save="saveModal"
-  >
-    <field-form
-      v-slot="{ field }"
-      v-model="Input.selectedCategory"
-      name="Category"
-    >
-      <input-comp v-bind="field" v-model="Input.selectedCategory">
-        <drop-down :options="optionsCategory" />
-      </input-comp>
-    </field-form>
-    <field-form v-slot="{ field }" v-model="Input.selectedType" name="Type">
-      <input-comp v-bind="field" v-model="Input.selectedType">
-        <drop-down :options="optionsType" />
-      </input-comp>
-    </field-form>
-    <field-form v-slot="{ field }" v-model="Input.totalData" name="Total">
-      <input-comp label="Total" v-bind="field" />
-    </field-form>
-    <field-form v-slot="{ field }" v-model="Input.infoData" name="Info">
-      <input-comp label="Info" v-bind="field" />
-    </field-form>
-  </modal-component>
+  <table-comp />
 </template>
 
 <script>

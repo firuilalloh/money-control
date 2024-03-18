@@ -26,9 +26,9 @@ export default {
     <div class="empty-result mx-auto py-8 px-0">
       <div class="d-flex justify-content-center">
         <div v-if="loadState === null" class="spinner-border" role="status">
-          <i class="fas fa-spinner fa-spin-pulse fa-2x">
+          <!-- <i class="fas fa-spinner fa-spin-pulse fa-2x"> -->
             <span class="sr-only">Loading...</span>
-          </i>
+          <!-- </i> -->
         </div>
           <h3 class="text-danger text-center"><strong>{{text}} Data</strong> is Empty!</h3>
       </div>

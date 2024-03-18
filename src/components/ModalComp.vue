@@ -3,7 +3,6 @@
       { 'show d-block': show },
       { 'd-none': !show },
       { 'modal-mini': type === 'mini' },
-      { 'modal-dark': g$site.meta.dark },
     ]" tabindex="-1" role="dialog" :aria-hidden="!show" @mousedown.self="closeHandler(true)">
       <div class="modal-dialog modal-dialog-centered" :class="[
         { 'modal-notice': type === 'notice', [`modal-${size}`]: size },

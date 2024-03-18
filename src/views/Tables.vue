@@ -17,9 +17,57 @@
             @delete-transaction="DeleteModal"
           />
         </empty-result>
-
+        <!-- 
         <modal-component :modalTitle="modalTitle" :is-active="isModalVisible">
           <template #body>
+            <field-form
+              v-slot="{ field }"
+              v-model="dataInput.category_id"
+              name="category"
+            >
+              <input-comp v-bind="field" v-model="dataInput.category_id">
+                <drop-down :options="optionsCategory" name="Category" />
+              </input-comp>
+            </field-form>
+            <field-form
+              v-slot="{ field }"
+              v-model="dataInput.type_id"
+              nmae="type"
+            >
+              <input-comp v-bind="field" v-model="dataInput.type_id">
+                <drop-down :options="optionsType" name="Type" />
+              </input-comp>
+            </field-form>
+            <field-form
+              v-slot="{ field }"
+              v-model="dataInput.total"
+              name="Total"
+            >
+              <input-comp label="Total" v-bind="field" />
+            </field-form>
+            <field-form v-slot="{ field }" v-model="dataInput.info" name="Info">
+              <input-comp label="Info" v-bind="field" />
+            </field-form>
+          </template>
+          <template #footer>
+            <button-component buttonStyle="danger" @click="closeModal">
+              Close
+            </button-component>
+            <button-component buttonStyle="success" @click="submitData">
+              Save
+            </button-component>
+          </template>
+        </modal-component> -->
+
+        <modal-component
+          v-model:show="isModalVisible"
+          modalClassess="modal-xl"
+          prevent-close
+        >
+          <template #header>
+            <h3>Modal</h3>
+          </template>
+          <template v-if="isModalVisible" #body>
             <field-form
               v-slot="{ field }"
               v-model="dataInput.category_id"
@@ -72,11 +120,16 @@ export default {
   data: () => ({
     // input data
     dataInput: {
-      transaction_id: null,
+      id: null,
       category_id: "",
       type_id: "",
       total: "",
       info: "",
+    },
+    //modal
+    modal: {
+      edit: false,
+      delete: false,
     },
     // data kolom
     dt: {
@@ -118,18 +171,58 @@ export default {
   }),
   computed: {
     ...mapState(st$transaction, ["g$dataTransaction", "g$dataBalance"]),
+    modals() {
+      return Object.values(this.modal).includes(true);
+    },
+  },
+  watch: {
+    async modals(val) {
+      if (!val) this.clearInput();
+    },
   },
   async mounted() {
     await this.transaction();
     await this.balance();
+    console.log(this.transaction());
   },
   methods: {
     showModal() {
+      this.dataInput = {
+        id: null,
+        category_id: "",
+        type_id: "",
+        total: "",
+        info: "",
+      };
       this.isModalVisible = true;
+      console.log("clicked");
+    },
+
+    clearInput() {
+      this.dataInput = {
+        id: null,
+        category_id: "",
+        type_id: "",
+        total: "",
+        info: "",
+      };
     },
 
     closeModal() {
       this.isModalVisible = false;
+    },
+
+    showEditModal() {
+      this.isModalVisible = true;
+      const data = this.g$dataTransaction;
+      this.dataInput = {
+        id: data.id,
+        category_id: data.category_id,
+        type_id: data.type_id,
+        total: data.total,
+        info: data.info,
+      };
+      console.log(this.dataInput);
     },
 
     ...mapActions(st$transaction, [
@@ -137,6 +230,7 @@ export default {
       "a$addTransaction",
       "a$getBalance",
       "a$editTransaction",
+      "a$deleteTransaction",
     ]),
     async transaction() {
       try {
@@ -152,21 +246,60 @@ export default {
         console.error(error);
       }
     },
-    async submitData() {
+
+    submitData() {
+      // const success = this.g$dataBalance.status === true
+
+      // switch (success) {
+      //   case false:
+      //     alert("Your balance is not sufficient");
+      //     break;
+
+      //   case true:
+      //     await this.a$addTransaction(this.dataInput);
+      //     this.isModalVisible = false;
+      //     window.location.reload();
+      //     break;
+      // }
+
       try {
-        this.a$addTransaction(this.dataInput);
-        this.isModalVisible = false;
-        window.location.reload();
+        console.log(this.g$dataBalance.total);
+        if (this.dataInput.total > this.g$dataBalance.total) {
+          alert("balance not sufficient");
+        } else {
+          this.a$addTransaction(this.dataInput);
+          this.isModalVisible = false;
+          window.location.reload();
+        }
       } catch (error) {
         console.log("error", error);
       }
     },
+
     async EditModal() {
-      console.log("test");
+      try {
+        this.showEditModal();
+        // [this.input] = await this.a$customerDetail(data.id);
+      } catch (error) {
+        console.error("Error editing transaction:", error);
+      }
     },
 
-    async DeleteModal() {
-      console.log("test2");
+    async DeleteModal(data) {
+      try {
+        const confirmResult = window.confirm(
+          "Are you sure to delete this data ?"
+        );
+        console.log(confirmResult);
+        if (confirmResult) {
+          await this.a$deleteTransaction(data.id);
+          console.log("Data deleted successfully.");
+        } else {
+          console.log("Deletion canceled by the user.");
+        }
+      } catch (error) {
+        console.error("Error deleting transaction:", error);
+      }
     },
   },
 };
