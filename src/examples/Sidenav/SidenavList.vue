@@ -7,38 +7,80 @@
       <li class="mt-3 nav-item"></li>
       <li class="nav-item">
         <sidenav-item
-          url="/dashboard-default"
-          :class="getRoute() === 'dashboard-default' ? 'active' : ''"
-          :navText="'Dashboard'"
+          url="/sales"
+          :class="getRoute() === 'sales' ? 'active' : ''"
+          :navText="'Sales'"
         >
           <template v-slot:icon>
-            <i class="ni ni-tv-2 text-primary text-sm opacity-10"></i>
+            <i class="ni ni-tv-2 text-primary text-lg opacity-10"></i>
           </template>
         </sidenav-item>
       </li>
       <li class="nav-item">
         <sidenav-item
-          url="/tables"
-          :class="getRoute() === 'tables' ? 'active' : ''"
-          :navText="'Tables'"
+          url="/purchase"
+          :class="getRoute() === 'purchase' ? 'active' : ''"
+          :navText="'Purchase'"
         >
           <template v-slot:icon>
             <i
-              class="ni ni-calendar-grid-58 text-warning text-sm opacity-10"
+              class="ni ni-money-coins text-warning text-lg opacity-10"
             ></i>
           </template>
         </sidenav-item>
       </li>
       <li class="nav-item">
         <sidenav-item
-          url="/home"
-          :class="getRoute() === 'home' ? 'active' : ''"
-          :navText="'Home'"
+          url="/warehouse"
+          :class="getRoute() === 'warehouse' ? 'active' : ''"
+          :navText="'Warehouse'"
         >
           <template v-slot:icon>
-            <i
-              class="ni ni-shop text-warning text-sm opacity-10"
-            ></i>
+            <i class="ni ni-shop text-warning text-lg opacity-10"></i>
+          </template>
+        </sidenav-item>
+      </li>
+      <li class="nav-item">
+        <sidenav-item
+          url="/manufacturing"
+          :class="getRoute() === 'manufacturing' ? 'active' : ''"
+          :navText="'Manufacturing'"
+        >
+          <template v-slot:icon>
+            <i class="ni ni-planet text-warning text-lg opacity-10"></i>
+          </template>
+        </sidenav-item>
+      </li>
+      <li class="nav-item">
+        <sidenav-item
+          url="/inventory"
+          :class="getRoute() === 'inventory' ? 'active' : ''"
+          :navText="'Inventory'"
+        >
+          <template v-slot:icon>
+            <i class="ni ni-app text-warning text-lg opacity-10"></i>
+          </template>
+        </sidenav-item>
+      </li>
+      <li class="nav-item">
+        <sidenav-item
+          url="/sad"
+          :class="getRoute() === 'shipping and sad' ? 'active' : ''"
+          :navText="'Shipping And Distribution'"
+        >
+          <template v-slot:icon>
+            <i class="ni ni-box-2 text-warning text-sm opacity-10"></i>
+          </template>
+        </sidenav-item>
+      </li>
+      <li class="nav-item">
+        <sidenav-item
+          url="/finance"
+          :class="getRoute() === 'finance' ? 'active' : ''"
+          :navText="'Finance'"
+        >
+          <template v-slot:icon>
+            <i class="ni ni-credit-card text-warning text-sm opacity-10"></i>
           </template>
         </sidenav-item>
       </li>

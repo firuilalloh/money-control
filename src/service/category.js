@@ -1,6 +1,6 @@
 import { baseApi } from "../plugins/axios";
 
-const api = "api/users/category"
+const api = "api/category"
 
 const getCategory = () => baseApi.get(`${api}/getcategory`)
 

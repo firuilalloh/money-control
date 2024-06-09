@@ -1,5 +1,6 @@
 <template>
   <button :class="computedClass" @click="handleClick">
+    <span>{{ title }}</span>
     <slot></slot>
   </button>
 </template>
@@ -10,6 +11,9 @@ export default {
     buttonStyle: {
       type: String,
     },
+    title: {
+      type: String
+    }
   },
   computed: {
     computedClass() {
