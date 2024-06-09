@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import * as sv$getCategory from "../service/category.js";
+import * as sv$getCategory from "../service/index.js";
 
 const st$category = defineStore({
   id: "Category store",

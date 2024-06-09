@@ -51,11 +51,8 @@ const handleSearch = (search) => {
       <div class="card-header mt-2">
         <h6>{{ title }}</h6>
       </div>
-      <div class="card-header">
-        <SearchFrom @search="handleSearch" />
-      </div>
     </div>
-    <div class="card-body px-0 pt-0">
+    <div class="card-body px-0 pt-0 text-center">
       <div class="table-responsive p-0">
         <table class="table table-bordered align-items-center">
           <thead>
@@ -70,14 +67,14 @@ const handleSearch = (search) => {
           </thead>
           <tbody>
             <tr
-              class="body-table"
+              class="body-table text-center"
               v-for="(item, index) in filteredItems"
               :key="index"
             >
               <td v-for="(col) in columns" :key="col.name">
                 {{ item[col.name] }}
               </td>
-              <td class="pt-3 pb-1 d-flex justify-content-evenly ">
+              <td class="pt-3 pb-1 d-flex justify-content-evenly">
                 <button-component buttonStyle="warning" title="Detail" @click="onButtonClick(item)" />
                 <button-component buttonStyle="danger" title="Delete" @click="onButtonClick(item)" />
               </td>

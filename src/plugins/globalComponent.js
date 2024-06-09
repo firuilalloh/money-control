@@ -3,7 +3,6 @@ import EmptyResult from "../components/EmptyResult.vue";
 import ModalComponent from "../components/ModalComponent.vue";
 import ModalComp from "../components/ModalComp.vue";
 import InputComp from "../components/InputComp.vue";
-import DatePicker from "../views/Home.vue";
 import ButtonComponent from "../components/ButtonComponent.vue";
 import DropDown from "../components/DropDown.vue";
 import CardComp from "../examples/Cards/Card.vue";
@@ -19,7 +18,6 @@ const GlobalComponent = {
     app.component("ModalComp", ModalComp);
     app.component("InputComp", InputComp);
     app.component("DropDown", DropDown);
-    app.component("DatePicker", DatePicker);
     app.component("CardComp", CardComp);
     app.component("DataTableFilter", DataTableFilter);
 
