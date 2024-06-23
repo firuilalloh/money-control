@@ -1,6 +1,6 @@
 <template>
   <div>
-    <label>{{ name }}</label>
+    <!-- <label>{{ name }}</label> -->
     <select class="form-select" v-model="selectedValue" @change="handleChange">
       <option v-for="(option, index) in options" :key="index" :value="option.value">
         {{ option.text }}
@@ -32,6 +32,9 @@ export default {
   watch: {
     value(newValue) {
       this.selectedValue = newValue
+    },
+    selectedValue(newValue) {
+      this.$emit('input', newValue)
     }
   },
   methods: {

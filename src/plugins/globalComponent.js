@@ -8,6 +8,7 @@ import DropDown from "../components/DropDown.vue";
 import CardComp from "../examples/Cards/Card.vue";
 import { Field, Form } from "vee-validate";
 import DataTableFilter from "../components/DataTableFilter.vue";
+import BaseInput from "../components/BaseInput.vue";
 
 const GlobalComponent = {
   install(app) {
@@ -20,6 +21,7 @@ const GlobalComponent = {
     app.component("DropDown", DropDown);
     app.component("CardComp", CardComp);
     app.component("DataTableFilter", DataTableFilter);
+    app.component("BaseInput",BaseInput)
 
     app.component("FieldForm", Field);
     app.component("FormComp", Form);

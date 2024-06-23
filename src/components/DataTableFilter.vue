@@ -26,22 +26,29 @@ const props = defineProps({
   },
 });
 
+const emit = defineEmits(["update-item", "delete-item"]);
+
 const filteredItems = computed(() => {
   if (searchFilter.value === "") {
     return props.items;
   }
-  return props.items.filter(
-    (item) =>
-      props.columns.some((col) =>
-        item[col.name]
-          .toLowerCase()
-          .includes(searchFilter.value.toLowerCase())
-      )
+  return props.items.filter((item) =>
+    props.columns.some((col) =>
+      item[col.name].toLowerCase().includes(searchFilter.value.toLowerCase())
+    )
   );
 });
 
 const handleSearch = (search) => {
   searchFilter.value = search;
+};
+
+const updateData = (item) => {
+  emit("update-item", item);
+};
+
+const deleteData = (item) => {
+  emit("delete-item", item);
 };
 </script>
 
@@ -57,7 +64,7 @@ const handleSearch = (search) => {
         <table class="table table-bordered align-items-center">
           <thead>
             <tr>
-              <th v-for="(col) in columns" :key="col.name">
+              <th v-for="col in columns" :key="col.name">
                 {{ col.label }}
               </th>
               <th>
@@ -71,19 +78,28 @@ const handleSearch = (search) => {
               v-for="(item, index) in filteredItems"
               :key="index"
             >
-              <td v-for="(col) in columns" :key="col.name">
+              <td v-for="col in columns" :key="col.name">
                 {{ item[col.name] }}
               </td>
               <td class="pt-3 pb-1 d-flex justify-content-evenly">
-                <button-component buttonStyle="warning" title="Detail" @click="onButtonClick(item)" />
-                <button-component buttonStyle="danger" title="Delete" @click="onButtonClick(item)" />
+                <button-component
+                  type="warning"
+                  title="Update"
+                  @click="() => updateData(item)"
+                  >Edit</button-component
+                >
+                <button-component
+                  type="danger"
+                  title="Delete"
+                  @click="() => deleteData(item)"
+                  >Delete</button-component
+                >
               </td>
             </tr>
           </tbody>
         </table>
       </div>
-      <div class="col-md-6">
-      </div>
+      <div class="col-md-6"></div>
     </div>
   </div>
 </template>

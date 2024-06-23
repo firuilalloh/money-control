@@ -45,9 +45,9 @@
         <div class="modal-body" :class="classBody">
           <slot name="body"></slot>
         </div>
-        <div class="modal-footer" :class="classFotter">
+        <!-- <div class="modal-footer" :class="classFotter">
           <slot name="footer"></slot>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
@@ -145,6 +145,7 @@ export default {
 .modal.show {
   background-color: rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(0.25rem);
+  z-index: 9999;
 }
 
 .modal-dark .modal-content {
