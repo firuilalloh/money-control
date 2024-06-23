@@ -156,16 +156,16 @@ export default {
         console.error(error);
       }
     },
-    openEditModal(items) {
-      this.input.id = items.id;
-      this.input.product = items.product;
-      this.input.totalProduct = items.totalProduct;
-      this.input.customer = items.customer;
-      this.input.paymentMethod = items.paymentMethod;
-      this.input.statusPay = items.statusPay;
-      this.input.total = items.total;
-      this.modal.edit = true; // Menampilkan modal edit
-    },
+    // openEditModal(items) {
+    //   this.input.id = items.id;
+    //   this.input.product = items.product;
+    //   this.input.totalProduct = items.totalProduct;
+    //   this.input.customer = items.customer;
+    //   this.input.paymentMethod = items.paymentMethod;
+    //   this.input.statusPay = items.statusPay;
+    //   this.input.total = items.total;
+    //   this.modal.edit = true; // Menampilkan modal edit
+    // },
   },
 };
 </script>
